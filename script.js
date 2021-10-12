@@ -1,6 +1,8 @@
 const game = document.getElementById("game");
 const restart = document.getElementById("restart");
-var player = "X"
+var player = "X";
+document.getElementById('restart').style.visibility = 'hidden';
+
 createBoard();
 
 function playerChange() {
@@ -8,7 +10,7 @@ function playerChange() {
     {
         player = "0";
     }
-    else {
+    else if(player == "0") {
         player = "X"
     }
 }
@@ -16,6 +18,7 @@ function playerChange() {
 let gameStatus =[["", "", ""],
                 ["", "", ""],
                 ["", "", ""]];
+
 function checkForWinner(line, collumn, player) {
     var counter = 0;
     for(var i = 0; i < 3; ++i){
@@ -49,7 +52,7 @@ function checkForWinner(line, collumn, player) {
     counter = 0;
     if(line + collumn == 3-1) {
         for(var i = 0; i < 3; ++i) { 
-            if(gameStatus[i][3-i+1] == player){
+            if(gameStatus[i][3-i-1] == player){
                 ++counter;
             }
         }
@@ -75,6 +78,13 @@ function createBoard(){
         game.appendChild(createDiv);
     }
 }
+
+function removeBoard(){
+    for( var i = 0; i < 9; ++i){
+        document.removeChild(game);
+    }
+}
+
 function checkForDraw() {
     var drawCheck = 0
     for(var i = 0; i < 3; ++i){
@@ -90,6 +100,10 @@ function checkForDraw() {
     return false;
 }
 var turn = 0;
+function gameOver(target) {
+        target.removeEventListener();
+}
+
 game.addEventListener('click', (e) => {
     const pressed = e.target;
     var checkLine = parseInt(pressed.getAttribute('l'));
@@ -105,16 +119,18 @@ game.addEventListener('click', (e) => {
     }
     else {
         alert("nope!");
-        playerChange();
+       playerChange();
     } 
     ++turn
-    if(checkForWinner(checkLine, checkCol, player)){
-        document.getElementById('winner').textContent = "PLAYER " +player +" has won!";
-     }   
-    playerChange();
     if(checkForDraw()) {
         document.getElementById('winner').textContent ="It's a tie!";
-    }
+        document.getElementById('restart').style.visibility ='visible';
+        document.getElementById('game').style.visibility = "hidden";
+        }
+    if(checkForWinner(checkLine, checkCol, player)){
+        document.getElementById('winner').textContent = "PLAYER " +player +" has won!";
+        document.getElementById('restart').style.visibility ='visible';
+        document.getElementById('game').style.visibility = "hidden";
+    }   
+    playerChange();
 })
-
-
