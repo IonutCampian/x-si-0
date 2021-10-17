@@ -17,7 +17,7 @@ h1 {
   font-size: 3rem;
   color: black;
 }
-.container div {
+.container button {
   cursor: pointer;
   width: 100px;
   height: 100px;
