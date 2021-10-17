@@ -70,11 +70,12 @@ function restartTheGame() {
 function createBoard(){
     let line, col;
     for(var i = 0; i < 9; ++i) {
-        let createDiv = document.createElement("div");
+        let createDiv = document.createElement("button");
         line = Math.round((i+2)/3)-1;
         col = Math.round(i % 3);
         createDiv.setAttribute("l", line);
         createDiv.setAttribute("c", col);
+        createDiv.setAttribute("id", i);
         game.appendChild(createDiv);
     }
 }
@@ -100,9 +101,6 @@ function checkForDraw() {
     return false;
 }
 var turn = 0;
-function gameOver(target) {
-        target.removeEventListener();
-}
 
 game.addEventListener('click', (e) => {
     const pressed = e.target;
@@ -125,12 +123,18 @@ game.addEventListener('click', (e) => {
     if(checkForDraw()) {
         document.getElementById('winner').textContent ="It's a tie!";
         document.getElementById('restart').style.visibility ='visible';
-        document.getElementById('game').style.visibility = "hidden";
+        document.getElementById('turn').style.visibility = "hidden";
+        for(var i = 0; i < 9; ++i){
+            document.getElementById(i).disabled = true;
+        }
         }
     if(checkForWinner(checkLine, checkCol, player)){
         document.getElementById('winner').textContent = "PLAYER " +player +" has won!";
         document.getElementById('restart').style.visibility ='visible';
-        document.getElementById('game').style.visibility = "hidden";
+        document.getElementById('turn').style.visibility = "hidden";
+        for(var i = 0; i < 9; ++i){
+            document.getElementById(i).disabled = true;
+        }
     }   
     playerChange();
 })
